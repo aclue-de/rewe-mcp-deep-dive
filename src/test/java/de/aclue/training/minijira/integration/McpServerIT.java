@@ -72,7 +72,8 @@ class McpServerIT {
         List<String> toolNames = connect().listTools().tools().stream().map(Tool::name).toList();
 
         assertThat(toolNames).containsExactlyInAnyOrder(
-                "search_issues", "get_issue", "get_project_structure", "get_team_workload", "get_sprint_report", "get_stale_tickets", "add_comment", "get_team_calendar");
+                "search_issues", "get_issue", "get_sprint_report", "add_comment",
+                "get_team_workload", "get_stale_tickets", "get_team_calendar");
     }
 
     @Test
@@ -111,6 +112,19 @@ class McpServerIT {
 
         assertThat(result.isError()).isTrue();
         assertThat(firstText(result)).isEqualTo("Ticket SHOP-999 not found. Tip: use search_issues.");
+    }
+
+    @Test
+    void readerRoleHeaderIsRefusedByAddComment() {
+        McpSyncClient reader = connect(request -> request.header("X-Mini-Jira-Role", "reader"));
+
+        CallToolResult result = reader.callTool(CallToolRequest.builder()
+                .name("add_comment")
+                .arguments(Map.of("key", "SHOP-101", "text", "Hello"))
+                .build());
+
+        assertThat(result.isError()).isTrue();
+        assertThat(firstText(result)).isEqualTo("Permission denied: role 'reader' may not add comments.");
     }
 
     private String firstText(CallToolResult result) {

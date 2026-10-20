@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__mini-jira__search_issues",
+      "mcp__mini-jira__get_issue",
+      "mcp__mini-jira__get_sprint_report",
+      "mcp__mini-jira__get_team_workload",
+      "mcp__mini-jira__get_stale_tickets",
+      "mcp__mini-jira__get_team_calendar"
+    ],
+    "ask": [
+      "mcp__mini-jira__add_comment"
+    ],
+    "deny": [
+      "mcp__mini-jira__get_project_structure"
+    ]
+  }
+}

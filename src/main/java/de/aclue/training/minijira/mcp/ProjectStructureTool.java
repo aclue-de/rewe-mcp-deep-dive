@@ -3,6 +3,7 @@ package de.aclue.training.minijira.mcp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springaicommunity.mcp.annotation.McpTool;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -15,9 +16,11 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * Returns the server's own project tree. Handy while exploring the server.
+ * Returns the server's own project tree. Handy while exploring the server, but it
+ * reveals internals, so it is only registered when mini-jira.admin-tools.enabled=true.
  */
 @Component
+@ConditionalOnProperty(name = "mini-jira.admin-tools.enabled", havingValue = "true")
 public class ProjectStructureTool {
 
     private static final Logger log = LoggerFactory.getLogger(ProjectStructureTool.class);
