@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--
+        The server runs in its own terminal, so every log line appears right there.
+        A copy goes to logs/mini-jira.log.
+    -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/mini-jira.log</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{0} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Logs every JSON-RPC message the server receives ("Received JSON message: ..."). -->
+    <logger name="io.modelcontextprotocol.spec.McpSchema" level="DEBUG"/>
+
+    <!-- Harmless startup warnings from Spring AI's annotation scanner. -->
+    <logger name="org.springframework.context.support.PostProcessorRegistrationDelegate" level="ERROR"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

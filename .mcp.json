@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "mini-jira": {
+      "type": "http",
+      "url": "http://localhost:8080/mcp"
+    }
+  }
+}
