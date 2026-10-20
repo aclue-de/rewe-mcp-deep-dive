@@ -2,6 +2,7 @@ package de.aclue.training.minijira.mcp;
 
 import de.aclue.training.minijira.domain.Comment;
 import de.aclue.training.minijira.domain.Issue;
+import de.aclue.training.minijira.domain.IssueNotFoundException;
 import de.aclue.training.minijira.domain.Status;
 import de.aclue.training.minijira.store.IssueStore;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springaicommunity.mcp.annotation.McpTool;
 import org.springaicommunity.mcp.annotation.McpToolParam;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -80,6 +82,26 @@ public class IssueTools {
                         "Ticket %s not found. Tip: use search_issues.".formatted(key)));
 
         return renderMarkdown(issue);
+    }
+
+    @McpTool(
+            name = "add_comment",
+            description = "Adds a comment to a single ticket. Modifies data — only use when the user explicitly asks for it.",
+            annotations = @McpTool.McpAnnotations(readOnlyHint = false, destructiveHint = false))
+    public String addComment(
+            @McpToolParam(description = "Ticket key, e.g. SHOP-101") String key,
+            @McpToolParam(description = "Comment text") String text) {
+
+        log.info("Tool call: add_comment(key={}, text length={})", key, text.length());
+
+        try {
+            store.addComment(key, "claude", LocalDate.now(), text);
+        } catch (IssueNotFoundException e) {
+            throw new ToolCallException(
+                    "Ticket %s not found. Tip: use search_issues.".formatted(key));
+        }
+
+        return "Comment added to %s.".formatted(key);
     }
 
     private String renderMarkdown(Issue issue) {

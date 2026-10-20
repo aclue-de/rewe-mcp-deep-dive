@@ -2,6 +2,7 @@ package de.aclue.training.minijira.mcp;
 
 import de.aclue.training.minijira.domain.Comment;
 import de.aclue.training.minijira.domain.Issue;
+import de.aclue.training.minijira.domain.IssueNotFoundException;
 import de.aclue.training.minijira.domain.Priority;
 import de.aclue.training.minijira.domain.Status;
 import de.aclue.training.minijira.store.IssueStore;
@@ -19,6 +20,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -89,6 +91,26 @@ class IssueToolsTest {
     void getIssueThrowsForMalformedKey() {
         assertThatThrownBy(() -> issueTools.getIssue("not-a-key"))
                 .isInstanceOf(ToolCallException.class);
+    }
+
+    @Test
+    void addCommentDelegatesToStoreWithClaudeAsAuthorAndTodaysDate() {
+        Issue updated = issue("SHOP-101", "Checkout broken", Status.IN_PROGRESS, Priority.HIGH, "lena", "Sprint 42");
+        when(store.addComment(eq("SHOP-101"), eq("claude"), eq(LocalDate.now()), eq("Thanks for reporting")))
+                .thenReturn(updated);
+
+        String result = issueTools.addComment("SHOP-101", "Thanks for reporting");
+
+        assertThat(result).contains("SHOP-101");
+    }
+
+    @Test
+    void addCommentThrowsMessageForUnknownKey() {
+        when(store.addComment(eq("SHOP-999"), any(), any(), any())).thenThrow(new IssueNotFoundException("SHOP-999"));
+
+        assertThatThrownBy(() -> issueTools.addComment("SHOP-999", "Text"))
+                .isInstanceOf(ToolCallException.class)
+                .hasMessage("Ticket SHOP-999 not found. Tip: use search_issues.");
     }
 
     private Issue issue(String key, String summary, Status status, Priority priority, String assignee,
