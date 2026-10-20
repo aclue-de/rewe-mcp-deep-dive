@@ -72,7 +72,7 @@ class McpServerIT {
         List<String> toolNames = connect().listTools().tools().stream().map(Tool::name).toList();
 
         assertThat(toolNames).containsExactlyInAnyOrder(
-                "search_issues", "get_issue", "get_project_structure", "data", "get_sprint_report");
+                "search_issues", "get_issue", "get_project_structure", "get_team_workload", "get_sprint_report", "get_stale_tickets");
     }
 
     @Test
@@ -80,7 +80,7 @@ class McpServerIT {
         List<String> resourceUris = connect().listResources().resources().stream().map(Resource::uri).toList();
 
         assertThat(resourceUris).containsExactlyInAnyOrder(
-                "docs://team/conventions");
+                "docs://team/conventions", "mini-jira://sprints");
     }
 
     @Test
@@ -88,7 +88,7 @@ class McpServerIT {
         List<String> promptNames = connect().listPrompts().prompts().stream().map(Prompt::name).toList();
 
         assertThat(promptNames).containsExactlyInAnyOrder(
-                "sprint-summary");
+                "sprint-summary", "ticket-triage");
     }
 
     @Test

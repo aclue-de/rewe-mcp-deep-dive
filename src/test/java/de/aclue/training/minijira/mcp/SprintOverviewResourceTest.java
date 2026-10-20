@@ -2,12 +2,10 @@ package de.aclue.training.minijira.mcp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.aclue.training.minijira.store.IssueStore;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Disabled("Lab 2 · Part C1: remove @Disabled once the resource mini-jira://sprints is implemented")
 class SprintOverviewResourceTest {
 
     private final IssueStore store = new IssueStore(new ObjectMapper().findAndRegisterModules(), "data/issues.json");

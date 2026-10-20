@@ -4,7 +4,6 @@ import de.aclue.training.minijira.domain.Issue;
 import de.aclue.training.minijira.domain.Priority;
 import de.aclue.training.minijira.domain.Status;
 import de.aclue.training.minijira.store.IssueStore;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@Disabled("Lab 2 · Part B: remove @Disabled once get_sprint_report is implemented")
 class SprintToolsTest {
 
     @Mock
