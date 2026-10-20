@@ -72,7 +72,7 @@ class McpServerIT {
         List<String> toolNames = connect().listTools().tools().stream().map(Tool::name).toList();
 
         assertThat(toolNames).containsExactlyInAnyOrder(
-                "search_issues", "get_issue", "get_project_structure");
+                "search_issues", "get_issue", "get_project_structure", "data", "get_sprint_report");
     }
 
     @Test
